@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "atender": {
+      "type": "http",
+      "url": "https://v3.atender.com/api/v1/plugin"
+    }
+  }
+}

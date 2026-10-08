@@ -1,0 +1,21 @@
+{
+  "name": "atender",
+  "version": "1.0.0",
+  "description": "Answer questions about Atender from its help articles and public API reference, and estimate how many people a support team needs.",
+  "author": {
+    "name": "Atender",
+    "email": "hello@atender.com",
+    "url": "https://www.atender.com"
+  },
+  "homepage": "https://www.atender.com",
+  "repository": "https://github.com/superagent-dev/atender-plugin",
+  "license": "MIT",
+  "keywords": [
+    "customer-support",
+    "helpdesk",
+    "staffing",
+    "api",
+    "atender"
+  ],
+  "displayName": "Atender"
+}

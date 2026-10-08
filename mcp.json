@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "atender": {
+      "type": "streamable-http",
+      "url": "https://v3.atender.com/api/v1/plugin"
+    }
+  }
+}

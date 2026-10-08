@@ -1,0 +1,106 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "atender",
+  "version": "1.0.0",
+  "description": "Answer questions about Atender from its help articles and public API reference, and estimate how many people a support team needs.",
+  "author": {
+    "name": "Atender",
+    "email": "hello@atender.com",
+    "url": "https://www.atender.com"
+  },
+  "homepage": "https://www.atender.com",
+  "repository": "https://github.com/superagent-dev/atender-plugin",
+  "license": "MIT",
+  "keywords": [
+    "customer-support",
+    "helpdesk",
+    "staffing",
+    "api",
+    "atender"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Atender",
+        "shortDescription": "Support answers and staffing",
+        "longDescription": "Ask what Atender, the customer support platform, can do and how its parts work: the answers come from Atender's published help articles, with a link to each article. Ask which call of the Atender public API an integration needs: you get the call, the permission it needs and a link to its reference. Give your conversation volume, opening hours and response promise, and get an estimate of how many people a support team needs at one moment, with cases to compare. The plugin needs no Atender account and reads no workspace data.",
+        "category": "Business & Operations",
+        "capabilities": [
+          "Answer questions about Atender from its published help articles",
+          "Find Atender public API calls for an integration",
+          "Estimate how many people a support team needs"
+        ],
+        "websiteURL": "https://www.atender.com",
+        "supportURL": "https://www.atender.com/contact",
+        "privacyPolicyURL": "https://www.atender.com/privacy-policy",
+        "termsOfServiceURL": "https://www.atender.com/terms",
+        "defaultPrompt": [
+          "How does a handover from the AI to a person work in Atender?",
+          "Which Atender API call creates a conversation from my CRM?",
+          "How many people do I need for 400 chats a day, 90% answered in 60 seconds?"
+        ],
+        "brandColor": "#171921",
+        "brandColorDark": "#FFFFFF",
+        "composerIcon": "./assets/icon.png",
+        "composerIconDark": "./assets/icon-dark.png",
+        "logo": "./assets/logo.png",
+        "logoDark": "./assets/logo-dark.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Explain a product feature from the help articles",
+              "prompt": "How does a handover from the AI to a person work in Atender?",
+              "tools_triggered": "search_atender_help",
+              "expected_behavior": "Describe the handover steps from Atender's help articles and list the articles used with their links."
+            },
+            {
+              "description": "Find an API call for an integration",
+              "prompt": "Does Atender have an API to create a conversation from my CRM? Which call do I use and which permission does the key need?",
+              "tools_triggered": "search_atender_api",
+              "expected_behavior": "Name POST /api/v1/conversations/inbound with the permission conversations:write and a link to its reference."
+            },
+            {
+              "description": "Estimate staffing for one queue",
+              "prompt": "How many people do I need for 400 chats a day, open 10 hours, 8 minutes each, 2 chats at once per person, 90% answered within 60 seconds?",
+              "tools_triggered": "estimate_support_staffing",
+              "expected_behavior": "Report 9 people on at one moment, with about 6 on conversations and about 91.5% answered within 60 seconds, and state the defaults used for time away and the busiest hour."
+            },
+            {
+              "description": "Compare two staffing cases",
+              "prompt": "I have two chat queues of 200 chats a day each, open 10 hours, 8 minutes per chat, 2 chats at once, 90% in 60 seconds. How many people do I need with two queues, and how many if I merge them into one?",
+              "tools_triggered": "estimate_support_staffing",
+              "expected_behavior": "Show one row per case from a single call and state that the merged queue needs fewer people than the two queues together."
+            },
+            {
+              "description": "Use more than one function in one answer",
+              "prompt": "Which API call lists the tags of a workspace, and how do tags work in Atender?",
+              "tools_triggered": "search_atender_api, search_atender_help",
+              "expected_behavior": "Name GET /api/v1/tags with the permission tags:read and a reference link, and explain tags from the help articles with article links."
+            }
+          ],
+          "negative": [
+            {
+              "description": "A person's own workspace data",
+              "prompt": "Show me the open conversations in my Atender inbox."
+            },
+            {
+              "description": "An action in a workspace",
+              "prompt": "Close conversation 4821 in Atender and send the customer a reply."
+            },
+            {
+              "description": "A general task with no link to Atender or to support staffing",
+              "prompt": "Write a birthday message for my colleague."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "This plugin does not sell products or process payments."
+      },
+      "publication": {
+        "release_notes": "First release: answers from Atender's help articles, answers about the Atender public API, and a staffing estimate for support teams. No sign-in."
+      }
+    }
+  }
+}
