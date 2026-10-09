@@ -91,6 +91,10 @@ Then, in the portal:
 - The demo recording for OpenAI is not made.
 - The Claude organization that owns the listing is not decided.
 - This repository is private. Claude publishes only from a public repository.
-- The skills also exist in the server code (`server/api/v1/plugin/skills.ts` in `sa-replit`), for
-  OpenAI's import from the server. `check.mjs --live` fails when the two copies differ. When
-  OpenAI reads the skills from this archive, the server copy can go.
+- For OpenAI the skills come from ONE source: the server, at the portal's scan. The archive has
+  no `skills/` folder, because OpenAI finds a `skills/` folder in a package by itself and requires
+  each skill name to be unique in a plugin. Claude reads the skills from this repository. So the
+  skills exist in two places (`skills/` here, `server/api/v1/plugin/skills.ts` in `sa-replit`), and
+  `check.mjs --live` fails when they differ.
+- Not tested: OpenAI's scan with these skills. No ChatGPT test has used a package; developer mode
+  has none.

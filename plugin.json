@@ -24,6 +24,7 @@
         "displayName": "Atender",
         "shortDescription": "Support answers and staffing",
         "longDescription": "Ask what Atender, the customer support platform, can do and how its parts work: the answers come from Atender's published help articles, with a link to each article. Ask which call of the Atender public API an integration needs: you get the call, the permission it needs and a link to its reference. Give your conversation volume, opening hours and response promise, and get an estimate of how many people a support team needs at one moment, with cases to compare. The plugin needs no Atender account and reads no workspace data.",
+        "developerName": "Atender",
         "category": "Business & Operations",
         "capabilities": [
           "Answer questions about Atender from its published help articles",
@@ -83,15 +84,18 @@
           "negative": [
             {
               "description": "A person's own workspace data",
-              "prompt": "Show me the open conversations in my Atender inbox."
+              "prompt": "Show me the open conversations in my Atender inbox.",
+              "expected_behavior": "Say that the plugin reads no workspace data and that the person can see their inbox in Atender itself. Call no function, or call none that returns workspace data."
             },
             {
               "description": "An action in a workspace",
-              "prompt": "Close conversation 4821 in Atender and send the customer a reply."
+              "prompt": "Close conversation 4821 in Atender and send the customer a reply.",
+              "expected_behavior": "Say that the plugin cannot change anything in a workspace and cannot send messages. Call no function."
             },
             {
               "description": "A general task with no link to Atender or to support staffing",
-              "prompt": "Write a birthday message for my colleague."
+              "prompt": "Write a birthday message for my colleague.",
+              "expected_behavior": "Answer with no Atender function, or say that the request is not about Atender or support staffing."
             }
           ]
         },

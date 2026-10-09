@@ -23,6 +23,7 @@ check(claudeUrl.startsWith('https://'), 'the server address must be https');
 
 const ui = portable.extensions['com.openai'].interface;
 check(ui.displayName.length <= 30, 'displayName: 30 or fewer');
+check(typeof ui.developerName === 'string' && ui.developerName.length > 0 && ui.developerName.length <= 80, 'developerName: required, 80 or fewer');
 check(ui.shortDescription.length <= 30, 'shortDescription: 30 or fewer');
 check(ui.longDescription.length <= 4000, 'longDescription: 4,000 or fewer');
 check(ui.capabilities.length <= 20 && ui.capabilities.every((c) => c.length <= 120), 'capabilities: 20 or fewer, 120 or fewer each');
@@ -30,6 +31,8 @@ check(ui.defaultPrompt.length <= 3 && ui.defaultPrompt.every((p) => p.length <= 
 for (const key of ['composerIcon', 'composerIconDark', 'logo', 'logoDark']) check(existsSync(ui[key]), `${key}: ${ui[key]} is missing`);
 const cases = portable.extensions['com.openai'].review.test_cases;
 check(cases.positive.length === 5 && cases.negative.length === 3, 'review: exactly 5 positive and 3 negative test cases');
+check(cases.positive.every((c) => c.description && c.prompt && c.tools_triggered && c.expected_behavior), 'review: each positive case needs description, prompt, tools_triggered and expected_behavior');
+check(cases.negative.every((c) => c.description && c.prompt && c.expected_behavior), 'review: each negative case needs description, prompt and expected_behavior');
 
 const skills = readdirSync('skills');
 check(skills.length >= 1 && skills.length <= 5, 'skills: 1 to 5');
