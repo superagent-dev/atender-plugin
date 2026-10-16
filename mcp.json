@@ -3,7 +3,14 @@
   "mcpServers": {
     "atender": {
       "type": "streamable-http",
-      "url": "https://v3.atender.com/api/v1/plugin"
+      "url": "https://v3.atender.com/api/v1/plugin",
+      "extensions": {
+        "com.openai": {
+          "auth": {
+            "type": "none"
+          }
+        }
+      }
     }
   }
 }
