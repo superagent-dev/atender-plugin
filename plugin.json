@@ -23,13 +23,14 @@
       "interface": {
         "displayName": "Atender",
         "shortDescription": "Support answers and staffing",
-        "longDescription": "Ask what Atender, the customer support platform, can do and how its parts work: the answers come from Atender's published help articles, with a link to each article. Ask which call of the Atender public API an integration needs: you get the call, the permission it needs and a link to its reference. Give your conversation volume, opening hours and response promise, and get an estimate of how many people a support team needs at one moment, with cases to compare. The plugin needs no Atender account and reads no workspace data.",
+        "longDescription": "Ask what Atender, the customer support platform, can do and how its parts work: the answers come from Atender's published help articles, with a link to each article. Ask which call of the Atender public API an integration needs: you get the call, the permission it needs and a link to its reference. Give your conversation volume, opening hours and response promise, and get an estimate of how many people a support team needs at one moment, with cases to compare. These three need no Atender account and read no workspace data. A person with an Atender account can also sign in to see which workspace and role the plugin is connected to; that sign-in asks for one permission, to read notifications.",
         "developerName": "Atender",
         "category": "Business & Operations",
         "capabilities": [
           "Answer questions about Atender from its published help articles",
           "Find Atender public API calls for an integration",
-          "Estimate how many people a support team needs"
+          "Estimate how many people a support team needs",
+          "Show the Atender workspace and role a signed-in person is connected to"
         ],
         "websiteURL": "https://www.atender.com",
         "supportURL": "https://www.atender.com/contact",
@@ -69,10 +70,10 @@
               "expected_behavior": "Report 9 people on at one moment, with about 6 on conversations and about 91.5% answered within 60 seconds, and state the defaults used for time away and the busiest hour."
             },
             {
-              "description": "Compare two staffing cases",
-              "prompt": "I have two chat queues of 200 chats a day each, open 10 hours, 8 minutes per chat, 2 chats at once, 90% in 60 seconds. How many people do I need with two queues, and how many if I merge them into one?",
-              "tools_triggered": "estimate_support_staffing",
-              "expected_behavior": "Show one row per case from a single call and state that the merged queue needs fewer people than the two queues together."
+              "description": "Show the connected workspace after sign-in",
+              "prompt": "Which Atender workspace am I connected to, and what is my role there?",
+              "tools_triggered": "get_connected_workspace",
+              "expected_behavior": "Before sign-in, ask the person to sign in to Atender. After sign-in with the review account, name the workspace and the person's role, and nothing else from the workspace."
             },
             {
               "description": "Use more than one function in one answer",
@@ -85,7 +86,7 @@
             {
               "description": "A person's own workspace data",
               "prompt": "Show me the open conversations in my Atender inbox.",
-              "expected_behavior": "Say that the plugin reads no workspace data and that the person can see their inbox in Atender itself. Call no function, or call none that returns workspace data."
+              "expected_behavior": "Say that the plugin does not read conversations or other workspace data, and that the person can see their inbox in Atender itself. Call no function that returns workspace data; get_connected_workspace returns only the workspace name and role."
             },
             {
               "description": "An action in a workspace",
@@ -103,7 +104,7 @@
         "commerce_description": "This plugin does not sell products or process payments."
       },
       "publication": {
-        "release_notes": "First release: answers from Atender's help articles, answers about the Atender public API, and a staffing estimate for support teams. No sign-in."
+        "release_notes": "First release: answers from Atender's help articles, answers about the Atender public API, and a staffing estimate for support teams, with no sign-in. A signed-in person can also see which workspace and role the plugin is connected to (one permission: read notifications)."
       }
     }
   }

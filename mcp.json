@@ -7,7 +7,13 @@
       "extensions": {
         "com.openai": {
           "auth": {
-            "type": "none"
+            "type": "mixed",
+            "client": {
+              "mode": "dcr"
+            },
+            "defaultScopes": [
+              "notifications:read"
+            ]
           }
         }
       }
