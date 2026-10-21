@@ -1,6 +1,6 @@
 # Atender
 
-Ask an AI assistant about [Atender](https://www.atender.com), the customer support platform, and plan a support team. The plugin needs no Atender account and reads no workspace data.
+Ask an AI assistant about [Atender](https://www.atender.com), the customer support platform, and plan a support team. Three of its four functions need no Atender account and read no workspace data. The fourth shows a signed-in person which workspace and role the plugin is connected to, with one permission: read notifications.
 
 ## What it does
 

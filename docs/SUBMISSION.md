@@ -44,12 +44,12 @@ submission, and must be public before the listing goes live.
 | Support contact  | `hello@atender.com`, `https://www.atender.com/contact`                                          |
 | Icon             | `assets/logo.png`                                                                               |
 | Slug             | `atender` (permanent after publication)                                                         |
-| Authentication   | None. The functions return public data only.                                                    |
+| Authentication   | Mixed: OAuth with dynamic client registration for one function (`get_connected_workspace`, scope `notifications:read`); the other three need none. |
 | Reads or writes  | Reads                                                                                           |
-| Before a person connects | Nothing. No account and no plan.                                                        |
+| Before a person connects | Nothing for the three open functions. An Atender account (Owner or Team Lead) for the sign-in function. |
 | API ownership    | Atender's own                                                                                   |
 | Health data, sponsored content | No                                                                                |
-| Test instructions | No account. Add the URL as a custom connector, then run the 5 positive prompts in `plugin.json`. |
+| Test instructions | Run the 5 positive prompts in `plugin.json`. The sign-in case uses the review account entered in the portal's Review details form. |
 
 ### 2. Plugin bundle (this repository)
 
