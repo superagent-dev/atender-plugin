@@ -64,6 +64,7 @@ check(cases.positive.length === 5 && cases.negative.length === 3, 'review: exact
 check(cases.positive.every((c) => c.description && c.prompt && c.tools_triggered && c.expected_behavior), 'review: each positive case needs description, prompt, tools_triggered and expected_behavior');
 check(cases.negative.every((c) => c.description && c.prompt && c.expected_behavior), 'review: each negative case needs description, prompt and expected_behavior');
 for (const key of ['test_credentials', 'reviewer_instructions']) check(!JSON.stringify(openai).includes(`"${key}"`), `plugin.json: "${key}" is refused in the ZIP; reviewer access goes in the portal's Review details`);
+check(/^https:\/\/\S+$/.test(openai.review.demo_recording_url ?? ''), 'review: demo_recording_url must be a public https link to the demo video');
 check(/^parts="[^"]*"$/m.test(readFileSync('scripts/package-openai.sh', 'utf8')) && !/^parts="[^"]*\bskills\b/m.test(readFileSync('scripts/package-openai.sh', 'utf8')), 'package-openai.sh: the default ZIP must not hold skills/; the server serves them');
 
 const skills = readdirSync('skills');
