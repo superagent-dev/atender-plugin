@@ -75,7 +75,7 @@ Then, in the portal:
 1. Copy the domain proof text. In `sa-replit`, set `OPENAI_APPS_CHALLENGE_TOKEN`, ship and deploy.
 2. Connect and scan the server. A skill scan can take up to 2 hours.
 3. Give a reason for each label of each function (below).
-4. Record the 5 positive test cases in ChatGPT and add the address as `review.demo_recording_url`.
+4. The demo of the test cases is `review.demo_recording_url`, a public Drive link. A new recording goes up as a new version of the same Drive file, so the address does not change. Check every frame for ChatGPT plan banners first.
 5. Accept the policy statements and submit.
 
 ### Reasons for the labels
@@ -89,7 +89,6 @@ Then, in the portal:
 
 ## Open before a submission
 
-- The demo recording for OpenAI is not made.
 - The Claude organization that owns the listing is not decided.
 - This repository is private. Claude publishes only from a public repository.
 - For OpenAI the skills come from ONE source: the server, at the portal's scan. The archive has
