@@ -60,6 +60,8 @@ function, a scope or a skill makes it red with no change here. The runner comes 
 repository variable `PLUGIN_RUNNER`, with `ubuntu-latest` as the fallback (the pattern of
 sa-replit's `docs/guides/operations.md` § CI runners on hermes3).
 
+To move CI to hermes3, a person with root on hermes3 registers a self-hosted runner for this repository with its own label. Then run `gh variable set PLUGIN_RUNNER --repo superagent-dev/atender-plugin --body <label>`. Delete the variable to go back to GitHub's runners: a label with no online runner queues the job and never fails.
+
 ## Knowledge
 
 `.ai/decisions/` and `.ai/pitfalls/` take ONE new file per entry, `YYYY-MM-DD-short-subject.md`.

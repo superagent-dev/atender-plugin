@@ -44,10 +44,6 @@ The plugin itself stores no password and reads no files. Do not put personal or 
 
 [atender.com/contact](https://www.atender.com/contact) or hello@atender.com. Terms: [atender.com/terms](https://www.atender.com/terms).
 
-## Maintainers
-
-Read `AGENTS.md` first. CI runs `scripts/check.mjs`, `scripts/check.mjs --live` and `scripts/evals.mjs` on each pull request and each day. To move CI to hermes3, a person with root on hermes3 registers a self-hosted runner for this repository with its own label. Then run `gh variable set PLUGIN_RUNNER --repo superagent-dev/atender-plugin --body <label>`. Delete the variable to go back to GitHub's runners: a label with no online runner queues the job and never fails.
-
 ## License
 
 MIT. See `LICENSE`.
