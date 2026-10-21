@@ -1,0 +1,36 @@
+name: Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    # The drift alarm: a deploy of sa-replit can change the live server with no change here.
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Checks and evals
+    # PLUGIN_RUNNER moves the job to a self-hosted runner on hermes3, unset it runs on GitHub.
+    # sa-replit docs/guides/operations.md § CI runners on hermes3 holds the pattern and the runners.
+    runs-on: ${{ vars.PLUGIN_RUNNER || 'ubuntu-latest' }}
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Files
+        run: node scripts/check.mjs
+      - name: Files against the live server
+        run: node scripts/check.mjs --live
+      - name: Review cases against the live server
+        run: node scripts/evals.mjs

@@ -4,9 +4,9 @@ This repository is the one source for the Atender plugin in two directories: Ant
 and OpenAI's (ChatGPT). The server that the plugin calls is not here; it is in the `sa-replit`
 repository, and its guide is `docs/guides/assistant-plugin.md` there.
 
-Run `node scripts/check.mjs --live` before each submission and after each change. It fails when
-the two manifests differ, when a listing field is over a limit, or when a skill here differs from
-the skill that the production server sends.
+Run `node scripts/check.mjs --live` and `node scripts/evals.mjs` before each submission and after
+each change; CI runs both on each pull request and each day. `AGENTS.md` lists what each one
+catches.
 
 ## What each directory reads
 
@@ -85,6 +85,7 @@ Then, in the portal:
 | `search_atender_help`       | It returns passages of published articles. It changes nothing a person can see. It writes one search statistics row with the search words and no identifier. | It deletes and overwrites nothing. | It searches one fixed set: Atender's own published help articles.  |
 | `search_atender_api`        | It searches a file in memory and stores nothing.                                                                    | It deletes and overwrites nothing. | It searches one fixed file: Atender's published API description.   |
 | `estimate_support_staffing` | It calculates from the numbers in the request and stores nothing.                                                   | It deletes and overwrites nothing. | It reads no outside source.                                        |
+| `get_connected_workspace`   | It reads the signed-in person's workspace name and role and stores nothing.                                         | It deletes and overwrites nothing. | It reads one fixed source: the person's own Atender workspace.     |
 
 ## Open before a submission
 
