@@ -61,7 +61,8 @@ jobs:
             exit 0
           fi
           if [ "${{ inputs.test_alarm }}" = "true" ]; then
-            scripts/slack-post.sh "Plugin · alarm test (no failure) · ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            result="checks passed"; [ "${{ needs.checks.result }}" = "success" ] || result="checks FAILED"
+            scripts/slack-post.sh "Plugin · alarm test (${result}) · ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
           else
             scripts/slack-post.sh "Plugin · daily check failed · ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
           fi
