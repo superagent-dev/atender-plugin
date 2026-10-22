@@ -10,10 +10,16 @@ text="${1:?usage: slack-post.sh <text>}"
 : "${SLACK_BOT_TOKEN:?SLACK_BOT_TOKEN is not set - cannot post}"
 : "${SLACK_CHANNEL:?SLACK_CHANNEL is not set - cannot post}"
 
+# The token goes to curl through a private config file, never as an argument.
+umask 077
+auth=$(mktemp)
+trap 'rm -f "$auth"' EXIT
+printf 'header = "Authorization: Bearer %s"\n' "$SLACK_BOT_TOKEN" >"$auth"
+
 # Sends nothing. It asks Slack who the token belongs to, so a rotated token shows at once and
 # `not_in_channel` names the bot to invite.
 who=$(curl -sS -X POST https://slack.com/api/auth.test \
-  -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+  --config "$auth" \
   -H 'Content-Type: application/x-www-form-urlencoded')
 if [ "$(echo "$who" | jq -r '.ok')" != "true" ]; then
   echo "::error::Slack token is invalid: $(echo "$who" | jq -r '.error')"
@@ -24,7 +30,7 @@ echo "::notice::Posting as $(echo "$who" | jq -r '.user'). Invite that bot if th
 resp=$(jq -n --arg c "$SLACK_CHANNEL" --arg t "$text" \
   '{channel:$c, text:$t, unfurl_links:false}' |
   curl -sS -X POST https://slack.com/api/chat.postMessage \
-    -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
+    --config "$auth" \
     -H 'Content-Type: application/json; charset=utf-8' \
     --data @-)
 if [ "$(echo "$resp" | jq -r '.ok')" != "true" ]; then

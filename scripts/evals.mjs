@@ -112,7 +112,12 @@ async function reviewAccountSignIn() {
   });
   const body = await res.json().catch(() => ({}));
   if (!res.ok || !body.access_token) return [`the review account cannot sign in: HTTP ${res.status}`];
-  return [];
+  const out = await fetch(`${SUPABASE_URL}/auth/v1/logout?scope=local`, {
+    method: 'POST',
+    headers: { apikey: SUPABASE_ANON_KEY, authorization: `Bearer ${body.access_token}` },
+    signal: AbortSignal.timeout(30_000),
+  });
+  return out.ok ? [] : [`the review account sign-out failed: HTTP ${out.status}`];
 }
 
 let failed = 0;
