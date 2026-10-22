@@ -96,6 +96,15 @@ Each package event (uploaded, submitted, approved, rejected, live) is posted to 
 The server keeps its function names and scopes in `server/api/v1/plugin/contract.json` in
 `sa-replit`, and a test there holds them. This repository does not copy that file.
 
+## Status
+
+| Directory | Version | State | Date | Package |
+|---|---|---|---|---|
+| OpenAI (ChatGPT) | 1.0.0 | In review | 2026-10-22 | `12b2caa`, organization ATENDER LABS MÁLAGA SL |
+| Anthropic (Claude) | — | Not submitted | — | — |
+
+Each change of state is posted to #v3-deployments (`Plugin <version> · <state>`).
+
 ## Open before a submission
 
 - The Claude organization that owns the listing is not decided.
