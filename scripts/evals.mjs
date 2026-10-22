@@ -89,7 +89,41 @@ const EVALS = {
   },
 };
 
+// Optional: the review account of the OpenAI portal can still sign in. A full OAuth sign-in needs
+// the browser consent page, so this check does the password sign-in that page relies on, with the
+// public settings the web app itself ships. It prints no credential and no token.
+async function reviewAccountSignIn() {
+  const email = process.env.REVIEW_LOGIN_EMAIL;
+  const password = process.env.REVIEW_LOGIN_PASSWORD;
+  if (!email || !password) {
+    console.log('- review account sign-in skipped: REVIEW_LOGIN_EMAIL and REVIEW_LOGIN_PASSWORD are not set');
+    return [];
+  }
+  const page = await (await fetch(new URL(url).origin, { signal: AbortSignal.timeout(30_000) })).text();
+  const setting = (name) => new RegExp(`"${name}":"([^"]+)"`).exec(page)?.[1];
+  const SUPABASE_URL = setting('SUPABASE_URL');
+  const SUPABASE_ANON_KEY = setting('SUPABASE_ANON_KEY');
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return ['the web app page gives no public sign-in settings'];
+  const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', apikey: SUPABASE_ANON_KEY },
+    body: JSON.stringify({ email, password }),
+    signal: AbortSignal.timeout(30_000),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.access_token) return [`the review account cannot sign in: HTTP ${res.status}`];
+  const out = await fetch(`${SUPABASE_URL}/auth/v1/logout?scope=local`, {
+    method: 'POST',
+    headers: { apikey: SUPABASE_ANON_KEY, authorization: `Bearer ${body.access_token}` },
+    signal: AbortSignal.timeout(30_000),
+  });
+  return out.ok ? [] : [`the review account sign-out failed: HTTP ${out.status}`];
+}
+
 let failed = 0;
+const signInErrors = await reviewAccountSignIn().catch((e) => [`review account sign-in failed: ${e.message}`]);
+if (signInErrors.length) failed++;
+if (process.env.REVIEW_LOGIN_EMAIL && process.env.REVIEW_LOGIN_PASSWORD) console.log(`${signInErrors.length ? '✗' : '✔'} the review account signs in${signInErrors.map((e) => `\n    ${e}`).join('')}`);
 for (const c of cases) {
   const run = EVALS[c.tools_triggered];
   const errors = run ? await run(c).catch((e) => [`call failed: ${e.message}`]) : [`no eval for tools_triggered "${c.tools_triggered}"; add one to scripts/evals.mjs`];

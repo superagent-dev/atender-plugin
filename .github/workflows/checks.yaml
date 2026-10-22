@@ -33,4 +33,27 @@ jobs:
       - name: Files against the live server
         run: node scripts/check.mjs --live
       - name: Review cases against the live server
+        env:
+          REVIEW_LOGIN_EMAIL: ${{ secrets.REVIEW_LOGIN_EMAIL }}
+          REVIEW_LOGIN_PASSWORD: ${{ secrets.REVIEW_LOGIN_PASSWORD }}
         run: node scripts/evals.mjs
+
+  tell:
+    name: Tell the team
+    needs: checks
+    if: failure() && github.event_name == 'schedule'
+    runs-on: ${{ vars.PLUGIN_RUNNER || 'ubuntu-latest' }}
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - name: Post to Slack
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_CHANNEL: ${{ vars.SLACK_CHANNEL }}
+        run: |
+          if [ -z "$SLACK_BOT_TOKEN" ]; then
+            echo "::notice::SLACK_BOT_TOKEN is not set, so the daily check alarm is not posted to Slack."
+            exit 0
+          fi
+          scripts/slack-post.sh "Plugin · daily check failed · ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+

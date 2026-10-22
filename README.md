@@ -29,7 +29,7 @@ The plugin runs no code on your machine. It has no hooks, no commands and no loc
 
 The only network destination is the Atender server named above, and only when the assistant calls one of the four functions.
 
-- A help question sends the search words to Atender. Atender stores the words, the time and the matching articles in its search statistics, with no name, account, network address or identifier of you. To find the articles, Atender sends the words to two of its sub-processors, OpenAI and Jina AI.
+- A help question sends the search words to Atender. Help search words: not stored. Atender keeps only telemetry for each search: the hour, the outcome, the number of results, the ids of the top 5 articles, the top score, whether ranking ran, and the time it took. It keeps no search words, no hash or embedding of them, no passage, no address and no id of a person. To find the articles, Atender sends the words to two of its sub-processors, OpenAI and Jina AI.
 - An API question sends the search words to Atender. They are not stored.
 - A staffing estimate sends your numbers to Atender. They are not stored.
 - The workspace function sends the sign-in token that the assistant got when you signed in to Atender. Atender reads your workspace name and role from it and returns them. The sign-in asks for one permission, read notifications; the function does not read notifications.
