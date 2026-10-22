@@ -58,9 +58,9 @@ Repository `superagent-dev/atender-plugin`, plugin path empty (the plugin is at 
 
 | Question                                              | Answer                                                                                                  |
 | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| Reads or stores personal data?                        | It asks for none. Help search words are stored with no identifier of a person; they can hold what a person typed. |
+| Reads or stores personal data?                        | It asks for none. Help search words: not stored. The server keeps only telemetry for each search (hour, outcome, result count, top 5 article ids, top score, whether ranking ran, latency), with no query text, hash, embedding, passage, address or id of a person. |
 | Sends data to services other than its declared connector? | No. The connector's server sends help search words to OpenAI and Jina AI as sub-processors.          |
-| How long is data kept?                                | Help search words: for as long as Atender keeps search statistics. API search words and staffing numbers: not stored. |
+| How long is data kept?                                | Help search words, API search words and staffing numbers: not stored. Search telemetry holds no text and no id of a person. |
 | Intended for people under 18?                         | No                                                                                                      |
 
 After both are submitted from the same organization, pair the two listings.
@@ -82,10 +82,19 @@ Then, in the portal:
 
 | Function                    | Read-only: true                                                                                                     | Destructive: false                 | Open world: false                                                  |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------------------------- | ------------------------------------------------------------------ |
-| `search_atender_help`       | It returns passages of published articles. It changes nothing a person can see. It writes one search statistics row with the search words and no identifier. | It deletes and overwrites nothing. | It searches one fixed set: Atender's own published help articles.  |
+| `search_atender_help`       | It returns passages of published articles. It changes nothing a person can see. It writes one telemetry row with no search words and no id of a person. | It deletes and overwrites nothing. | It searches one fixed set: Atender's own published help articles.  |
 | `search_atender_api`        | It searches a file in memory and stores nothing.                                                                    | It deletes and overwrites nothing. | It searches one fixed file: Atender's published API description.   |
 | `estimate_support_staffing` | It calculates from the numbers in the request and stores nothing.                                                   | It deletes and overwrites nothing. | It reads no outside source.                                        |
 | `get_connected_workspace`   | It reads the signed-in person's workspace name and role and stores nothing.                                         | It deletes and overwrites nothing. | It reads one fixed source: the person's own Atender workspace.     |
+
+## Status posts
+
+Each package event (uploaded, submitted, approved, rejected, live) is posted to #v3-deployments
+(`C0AN59B2HJ4`) in the fixed form of the `deploy-after-build` skill in `sa-replit`, with the title
+`Plugin <version> · <state>`, for example `Plugin 0.1.0 · submitted`.
+
+The server keeps its function names and scopes in `server/api/v1/plugin/contract.json` in
+`sa-replit`, and a test there holds them. This repository does not copy that file.
 
 ## Open before a submission
 

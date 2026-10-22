@@ -37,14 +37,11 @@ jobs:
           REVIEW_LOGIN_EMAIL: ${{ secrets.REVIEW_LOGIN_EMAIL }}
           REVIEW_LOGIN_PASSWORD: ${{ secrets.REVIEW_LOGIN_PASSWORD }}
         run: node scripts/evals.mjs
-      - name: TEMPORARY forced failure
-        if: github.event_name == 'workflow_dispatch'
-        run: exit 1
 
   tell:
     name: Tell the team
     needs: checks
-    if: failure() && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+    if: failure() && github.event_name == 'schedule'
     runs-on: ${{ vars.PLUGIN_RUNNER || 'ubuntu-latest' }}
     timeout-minutes: 2
     steps:
