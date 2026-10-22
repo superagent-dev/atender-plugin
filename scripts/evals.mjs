@@ -100,8 +100,9 @@ async function reviewAccountSignIn() {
     return [];
   }
   const page = await (await fetch(new URL(url).origin, { signal: AbortSignal.timeout(30_000) })).text();
-  const config = /__RUNTIME_CONFIG__\s*=\s*(\{.*?\})\s*;/s.exec(page)?.[1];
-  const { SUPABASE_URL, SUPABASE_ANON_KEY } = config ? JSON.parse(config) : {};
+  const setting = (name) => new RegExp(`"${name}":"([^"]+)"`).exec(page)?.[1];
+  const SUPABASE_URL = setting('SUPABASE_URL');
+  const SUPABASE_ANON_KEY = setting('SUPABASE_ANON_KEY');
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return ['the web app page gives no public sign-in settings'];
   const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
     method: 'POST',
