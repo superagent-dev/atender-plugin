@@ -8,6 +8,11 @@ on:
     # The drift alarm: a deploy of sa-replit can change the live server with no change here.
     - cron: '0 6 * * *'
   workflow_dispatch:
+    inputs:
+      test_alarm:
+        description: Post one test line to Slack, to prove the alarm works
+        type: boolean
+        default: false
 
 concurrency:
   group: checks-${{ github.ref }}
@@ -41,7 +46,7 @@ jobs:
   tell:
     name: Tell the team
     needs: checks
-    if: failure() && github.event_name == 'schedule'
+    if: (failure() && github.event_name == 'schedule') || (always() && inputs.test_alarm == true)
     runs-on: ${{ vars.PLUGIN_RUNNER || 'ubuntu-latest' }}
     timeout-minutes: 2
     steps:
@@ -55,5 +60,9 @@ jobs:
             echo "::notice::SLACK_BOT_TOKEN is not set, so the daily check alarm is not posted to Slack."
             exit 0
           fi
-          scripts/slack-post.sh "Plugin · daily check failed · ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          if [ "${{ inputs.test_alarm }}" = "true" ]; then
+            scripts/slack-post.sh "Plugin · alarm test (no failure) · ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          else
+            scripts/slack-post.sh "Plugin · daily check failed · ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          fi
 
