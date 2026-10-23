@@ -62,7 +62,7 @@ sa-replit's `docs/guides/operations.md` § CI runners on hermes3).
 
 When the daily run fails, the `tell` job posts one line to Slack (channel from the variable `SLACK_CHANNEL`, token from the secret `SLACK_BOT_TOKEN`). Without the secret it prints a notice and passes. With the secrets `REVIEW_LOGIN_EMAIL` and `REVIEW_LOGIN_PASSWORD`, the evals also check that the OpenAI review account can sign in. To prove the alarm without a failure, run the workflow by hand with `test_alarm` on: it posts one line marked as a test.
 
-The runner is `orca-atender-shared-plugin` on the shared container orca-atender-shared, Linux user `runner-plugin`, label `hermes3-plugin`. To move it, register a self-hosted runner for this repository with its own label, then run `gh variable set PLUGIN_RUNNER --repo superagent-dev/atender-plugin --body <label>`. Delete the variable to go back to GitHub's runners: a label with no online runner queues the job and never fails.
+The runner is a self-hosted runner with the label `hermes3-plugin`. A pull request from a fork always runs on GitHub's runners, never on it. To move it, register a self-hosted runner for this repository with its own label, then run `gh variable set PLUGIN_RUNNER --repo superagent-dev/atender-plugin --body <label>`. Delete the variable to go back to GitHub's runners: a label with no online runner queues the job and never fails.
 
 ## Knowledge
 
