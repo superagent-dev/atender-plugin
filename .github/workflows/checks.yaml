@@ -26,7 +26,8 @@ jobs:
     name: Checks and evals
     # PLUGIN_RUNNER moves the job to a self-hosted runner on hermes3, unset it runs on GitHub.
     # sa-replit docs/guides/operations.md § CI runners on hermes3 holds the pattern and the runners.
-    runs-on: ${{ vars.PLUGIN_RUNNER || 'ubuntu-latest' }}
+    # A pull request from a fork never runs on our self-hosted runner.
+    runs-on: ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository) && 'ubuntu-latest' || vars.PLUGIN_RUNNER || 'ubuntu-latest' }}
     timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
@@ -47,7 +48,8 @@ jobs:
     name: Tell the team
     needs: checks
     if: (failure() && github.event_name == 'schedule') || (always() && inputs.test_alarm == true)
-    runs-on: ${{ vars.PLUGIN_RUNNER || 'ubuntu-latest' }}
+    # A pull request from a fork never runs on our self-hosted runner.
+    runs-on: ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository) && 'ubuntu-latest' || vars.PLUGIN_RUNNER || 'ubuntu-latest' }}
     timeout-minutes: 2
     steps:
       - uses: actions/checkout@v4

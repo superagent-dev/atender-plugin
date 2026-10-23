@@ -17,13 +17,19 @@ Example questions:
 - Which Atender API call creates a conversation from my CRM?
 - How many people do I need for 400 chats a day, open 10 hours, 8 minutes each, 2 chats at once per person, 90% answered within 60 seconds?
 
-## Install in Claude Code
+## Install
+
+**Claude Code**
 
 ```
 /plugin install atender --marketplace superagent-dev/atender-plugin
 ```
 
 On an older Claude Code, add the marketplace first: `/plugin marketplace add superagent-dev/atender-plugin`, then `/plugin install atender@atender`.
+
+**ChatGPT:** version 1.0.0 is in review for the ChatGPT plugin directory (submitted 22 October 2026). It appears there when the review passes.
+
+**Any MCP client:** connect to `https://v3.atender.com/api/v1/plugin`. The three open functions need no account; the workspace function signs in with your Atender login.
 
 ## What is in this repository
 
