@@ -1,0 +1,15 @@
+{
+  "name": "atender",
+  "description": "The Atender plugin for Claude: answers about the Atender support platform and its API, and staffing estimates for support teams.",
+  "owner": {
+    "name": "Atender",
+    "email": "hello@atender.com"
+  },
+  "plugins": [
+    {
+      "name": "atender",
+      "source": "./",
+      "description": "Answers from Atender's help articles and API reference, staffing estimates, and the signed-in workspace."
+    }
+  ]
+}
