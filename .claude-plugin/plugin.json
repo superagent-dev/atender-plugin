@@ -17,5 +17,6 @@
     "api",
     "atender"
   ],
-  "displayName": "Atender"
+  "displayName": "Atender",
+  "privacyPolicyUrl": "https://www.atender.com/privacy-policy"
 }
