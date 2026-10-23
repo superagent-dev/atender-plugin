@@ -17,6 +17,14 @@ Example questions:
 - Which Atender API call creates a conversation from my CRM?
 - How many people do I need for 400 chats a day, open 10 hours, 8 minutes each, 2 chats at once per person, 90% answered within 60 seconds?
 
+## Install in Claude Code
+
+```
+/plugin install atender --marketplace superagent-dev/atender-plugin
+```
+
+On an older Claude Code, add the marketplace first: `/plugin marketplace add superagent-dev/atender-plugin`, then `/plugin install atender@atender`.
+
 ## What is in this repository
 
 - Three skills in `skills/`: instructions that tell the assistant when and how to use the functions.
